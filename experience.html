@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Expériences</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6b00;
+            --background-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #f5f5f5;
+            --card-border: #e0e0e0;
+            --nav-height: 70px;
+        }
+
+        .dark-theme {
+            --background-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        /* Curseur personnalisé */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            background-color: var(--card-bg);
+            height: var(--nav-height);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        nav.hide {
+            transform: translateY(-100%);
+        }
+
+        /* Logo styles */
+        .logo a {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(to right, var(--primary-color) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .logo a:hover {
+            background-position: left bottom;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.2);
+        }
+
+        .logo a::before {
+            content: '{ ';
+            color: var(--primary-color);
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+        }
+
+        .logo a::after {
+            content: ' }';
+            color: var(--primary-color);
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .logo a:hover::before,
+        .logo a:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        /* Active link style */
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active::before {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 5%;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Add margin to the main content to account for fixed navbar */
+        main {
+            margin-top: var(--nav-height);
+            padding-top: 2rem;
+        }
+
+        /* Section principale */
+        .experience-section {
+            padding: 4rem 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title-small {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .title-large {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .skill-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .skills-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .skill-icon {
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .skill-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .skill-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .skills-container {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: none;
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle::before {
+            content: '🌓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        .dark-theme .theme-toggle::before {
+            transform: translate(-50%, -50%) rotate(360deg);
+            content: '🌕';
+        }
+
+        @keyframes rotate {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .theme-toggle.rotating::before {
+            animation: rotate 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+
+    <nav>
+        <div class="logo"><a href="./index.html">Mon Portfolio</a></div>
+        <ul class="nav-links">
+            <li><a href="./experience.html" class="nav-link active">Expérience</a></li>
+            <li><a href="./projects.html" class="nav-link">Projets</a></li>
+            <li><a href="./about.html" class="nav-link">À propos</a></li>
+            <li><a href="./contact.html" class="nav-link">Contact</a></li>
+            <li>
+                <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="experience-section">
+            <div class="section-title">
+                <p class="title-small">Explore MY</p>
+                <h1 class="title-large">Experience</h1>
+            </div>
+
+            <div class="skills-container">
+                <div class="skill-card">
+                    <h2 class="skill-title">Frontend Development</h2>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>HTML</h3>
+                                <p>Expérimenté</p>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>CSS</h3>
+                                <p>Expérimenté</p>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>JavaScript</h3>
+                                <p>Basique-intermédiare</p>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>React</h3>
+                                <p>Basique-intermédiare</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <h2 class="skill-title">Backend Development</h2>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>Node.js</h3>
+                                <p>Expérimenté</p>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>Python</h3>
+                                <p>Intermédiaire</p>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>MySQL</h3>
+                                <p>Basique</p>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>php</h3>
+                                <p>Intermédiaire</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <h2 class="skill-title">Graphic Design</h2>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>Canva</h3>
+                                <p>Expérimenté</p>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>Cartes de Visite</h3>
+                                <p>Expérimenté</p>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>Menus Restaurant</h3>
+                                <p>Expérimenté</p>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <div class="skill-info">
+                                <h3>Design Marketing</h3>
+                                <p>Intermédiaire</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Curseur personnalisé
+        const cursor = document.querySelector('.cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(0.8)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+
+        // Toggle theme
+        function toggleTheme() {
+            const themeToggle = document.querySelector('.theme-toggle');
+            document.body.classList.toggle('dark-theme');
+            
+            // Add rotation animation
+            themeToggle.classList.add('rotating');
+            setTimeout(() => {
+                themeToggle.classList.remove('rotating');
+            }, 500);
+            
+            // Save theme preference
+            localStorage.setItem('dark-theme', document.body.classList.contains('dark-theme'));
+        }
+
+        // Initialize theme
+        const themeToggle = document.querySelector('.theme-toggle');
+        if (localStorage.getItem('dark-theme') === 'true') {
+            document.body.classList.add('dark-theme');
+            themeToggle.innerHTML = '🌕';
+        } else {
+            themeToggle.innerHTML = '🌓';
+        }
+
+        // Navigation animations
+        let lastScrollTop = 0;
+        const nav = document.querySelector('nav');
+        const navHeight = 70;
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > navHeight) {
+                nav.classList.add('hide');
+            } else {
+                nav.classList.remove('hide');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // Set active link
+        const navLinks = document.querySelectorAll('.nav-link');
+        const currentLocation = window.location.pathname;
+        const currentPage = currentLocation.split('/').pop() || 'landing-page.html';
+
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPage || 
+                (currentPage === 'landing-page.html' && href === './landing-page.html') ||
+                (href.includes(currentPage))) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À Propos - Mon Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6b00;
+            --background-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #f5f5f5;
+            --card-border: #e0e0e0;
+            --nav-height: 70px;
+        }
+
+        .dark-theme {
+            --background-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            background-color: var(--card-bg);
+            height: var(--nav-height);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        nav.hide {
+            transform: translateY(-100%);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active::before {
+            width: 100%;
+        }
+
+        /* Custom cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: none;
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle::before {
+            content: '🌓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        .dark-theme .theme-toggle::before {
+            transform: translate(-50%, -50%) rotate(360deg);
+            content: '🌕';
+        }
+
+        @keyframes rotate {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .theme-toggle.rotating::before {
+            animation: rotate 0.5s ease-in-out;
+        }
+
+        /* About section styles */
+        .about-section {
+            max-width: 1200px;
+            margin: calc(var(--nav-height) + 2rem) auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title-small {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .title-large {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .about-text h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .journey-timeline {
+            margin-top: 4rem;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+            border-left: 2px solid var(--primary-color);
+        }
+
+        .timeline-date {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content {
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 5%;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .title-large {
+                font-size: 2rem;
+            }
+
+            .about-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+
+    <nav>
+        <div class="logo">
+            <a href="./index.html">Mon Portfolio</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="./about.html" class="nav-link">À propos</a></li>
+            <li><a href="./experience.html" class="nav-link">Expérience</a></li>
+            <li><a href="./projects.html" class="nav-link">Projets</a></li>
+            <li><a href="./contact.html" class="nav-link">Contact</a></li>
+            <li>
+                <button class="theme-toggle" onclick="toggleTheme()"></button>
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="about-section">
+            <div class="section-title">
+                <p class="title-small">Découvrez QUI JE SUIS</p>
+                <h1 class="title-large">À Propos de Moi</h1>
+            </div>
+
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Mon Parcours</h2>
+                    <p>
+                        Je suis passionné par le code les mathématiques et la philosophie et Chaque jour j'essaye d'être meilleur que la veille. Mon parcours est jalonné de défis qui m'ont façonné et rendu plus fort.
+                        Mon objectif est de devenir un sage et un data scientist, combinant mes compétences techniques avec une réflexion philosophique profonde.
+                    </p>
+                    <p>
+                        Tout au long de mon parcours, j'ai été confronté à des difficultés qui m'ont appris la résilience. Ces expériences m'ont permis de développer une mentalité de croissance, me poussant à apprendre et à m'améliorer constamment. <span class="highlight">Mon objectif à long terme est de devenir un expert en <span class="highlight">data science</span>, 
+                        est de fusionner mes passions pour la philosophie et le code, et de contribuer au bien de la société, en devenant un data scientist capable de réfléchir profondément aux implications de mes travaux. Je suis déterminé à continuer à apprendre et à grandir, tant sur le plan personnel que professionnel. 
+                    </p>
+                    <p>
+                        Je combine mes compétences techniques avec une approche créative pour développer des solutions 
+                        qui non seulement fonctionnent parfaitement, mais sont aussi agréables à utiliser.
+                    </p>
+                </div>
+                <img src="apropos.jpg" alt="Ma photo de profil" class="about-image">
+            </div>
+
+            <div class="journey-timeline">
+                <h2>Mon Parcours</h2>
+                <div class="timeline-item">
+                    <div class="timeline-date">2021</div>
+                    <div class="timeline-content">
+                        <h3>Baccalauréat Spécialité Mathématiques et Sciences sociales et économiques</h3>
+                        <p>mention bien</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2021-2022</div>
+                    <div class="timeline-content">
+                        <h3>Classe préparatoire HEC</h3>
+                        <p>échec</p>
+                    </div>
+                </div>   
+                <div class="timeline-item">
+                    <div class="timeline-date">2022-2024</div>
+                    <div class="timeline-content">
+                        <h3>Bts Travaux Publics</h3>
+                        <p>obtention du diplôme</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024</div>
+                    <div class="timeline-content">
+                        <h3>Bts Cybersécurité électronique informatique et réseaux</h3>
+                        <p>première année</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2019-2024</div>
+                    <div class="timeline-content">
+                        <h3>Restauration temps partiel et saison</h3>
+                        <p>Depuis 2019</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Cursor animation
+        const cursor = document.querySelector('.cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.width = '15px';
+            cursor.style.height = '15px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.width = '20px';
+            cursor.style.height = '20px';
+        });
+
+        // Theme toggle
+        function toggleTheme() {
+            const themeToggle = document.querySelector('.theme-toggle');
+            document.body.classList.toggle('dark-theme');
+            
+            // Add rotation animation
+            themeToggle.classList.add('rotating');
+            setTimeout(() => {
+                themeToggle.classList.remove('rotating');
+            }, 500);
+            
+            // Save theme preference
+            localStorage.setItem('dark-theme', document.body.classList.contains('dark-theme'));
+        }
+
+        // Initialize theme
+        const themeToggle = document.querySelector('.theme-toggle');
+        if (localStorage.getItem('dark-theme') === 'true') {
+            document.body.classList.add('dark-theme');
+            themeToggle.innerHTML = '🌕';
+        } else {
+            themeToggle.innerHTML = '🌓';
+        }
+
+        // Navigation animations
+        let lastScrollTop = 0;
+        const nav = document.querySelector('nav');
+        const navHeight = 70;
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > navHeight) {
+                nav.classList.add('hide');
+            } else {
+                nav.classList.remove('hide');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // Set active link
+        const navLinks = document.querySelectorAll('.nav-link');
+        const currentLocation = window.location.pathname;
+        const currentPage = currentLocation.split('/').pop() || 'landing-page.html';
+
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPage || 
+                (currentPage === 'landing-page.html' && href === './landing-page.html') ||
+                (href.includes(currentPage))) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
